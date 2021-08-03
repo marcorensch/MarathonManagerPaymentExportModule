@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c235b7e2-6eac-4d01-b985-60ad1b30a6cf" name="SIMM Local - Manager Export Module" url="http://marathon.local">
+        <fileTransfer mountedRoot="$USER_HOME$/Sites/marathon/modules/mod_mmanager_export" accessType="MOUNT" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>
