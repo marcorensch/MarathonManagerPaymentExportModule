@@ -615,7 +615,7 @@ class ModMManagerExportHelper{
 
         // combine the data
         $data           = array();
-        $headline       = ['registration_id','eventid','Registrationsdatum','Teamname','Startnummer','Kategorie','','Anzahl Karten','Kontakt','','','Ankunft','','Bezahlt'];
+        $headline       = ['registration_id','eventid','Registrationsdatum','Teamname','Startnummer','Kategorie','','Sprache Last Info','Kontakt','','','Ankunft','','Bezahlt'];
         for($i=1; $i<6; $i++){
             $headline = array_merge($headline,['Läufer '.$i.' Vorname','Nachname','Jahrgang','Vergünstigung','Wohnort']);
         }
@@ -688,7 +688,8 @@ class ModMManagerExportHelper{
             $registration[] = $num;        // Number
             $registration[] = $category->labeledId;         // Category ID
             $registration[] = $category->label;             // Category Name
-            $registration[] = $regData->maps_count;
+            //$registration[] = $regData->maps_count;       // Entfernt in Version 1.1.2 gemäss Absprache DV Herbst 2021
+            $registration[] = $regData->lastinfolang;       // Hinzugefügt in Version 1.1.2 gemäss Absprache mit DV Herbst 2021
             $registration[] = $contactName;     // Kontakt
             $registration[] = $regData->contactemail . $runnerMails;
             $registration[] = $regData->emergency_number;
