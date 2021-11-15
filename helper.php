@@ -702,11 +702,11 @@ class ModMManagerExportHelper{
                 $registration[] = (array_key_exists('runner_firstname',$runnerItem)) ? $runnerItem['runner_firstname'] : '';
                 $registration[] = (array_key_exists('runner_lastname',$runnerItem)) ? $runnerItem['runner_lastname'] : '';
                 $registration[] = (array_key_exists('runner_year',$runnerItem)) ? $runnerItem['runner_year'] : '';
-                $registration[] = (array_key_exists('pt_reduction',$runnerItem)) ? self::publicTransportReduction($runnerItem['pt_reduction']) : '';
+                $registration[] = (array_key_exists('runner_pt_reduction',$runnerItem)) ? self::publicTransportReduction($runnerItem['runner_pt_reduction']) : '';
                 $registration[] = (array_key_exists('runner_location',$runnerItem)) ? $runnerItem['runner_location'] : '';
             }
             /*
-             * {"participants0":{"runner_gender":"m","runner_firstname":"MArco","runner_lastname":"Rensch","runner_location":"Mels","runner_country":"2","runner_year":"1986","runner_email":"marco.rensch@nx-designs.ch","pt_reduction":"0"}}
+             * {"participants0":{"runner_gender":"m","runner_firstname":"Marco","runner_lastname":"Rensch","runner_location":"Mels","runner_country":"2","runner_year":"1986","runner_email":"marco.rensch@nx-designs.ch","pt_reduction":"0"}}
              */
 
             $registrationsArr[] = $registration;
