@@ -490,9 +490,9 @@ class ModMManagerExportHelper{
 
             $query = $db->getQuery(true);
 
-            $query->select($db->quoteName(array('id','name', 'eventdate', 'headerimg', 'ordering')));
-            $query->from($db->quoteName('#__nxmarathonmanager_event'));
-            $query->where($db->quoteName('published') . ' = ' . $db->quote('1'));
+            $query->select($db->quoteName(array('event.id','event.name', 'event.eventdate', 'event.headerimg', 'event.ordering')));
+            $query->from($db->quoteName('#__nxmarathonmanager_event','event'));
+            $query->where($db->quoteName('event.published') . ' = ' . $db->quote('1'));
             if($filter_time !== 'all'){
                 $now = new Date('now');
                 if($filter_time === 'future'){
@@ -500,9 +500,9 @@ class ModMManagerExportHelper{
                 }else{
                     $operator = '<';
                 }
-                $query->where($db->quoteName('eventdate') . $operator . $db->quote($now));
+                $query->where($db->quoteName('event.eventdate') . $operator . $db->quote($now));
             }
-            $query->order('eventdate DESC');
+            $query->order('event.eventdate DESC');
 
             $db->setQuery($query);
 
@@ -527,10 +527,10 @@ class ModMManagerExportHelper{
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select('COUNT(*)');
-        $query->from($db->quoteName('#__nxmarathonmanager_registration'));
-        $query->where($db->quoteName('eventid') . ' = '.$db->quote($eventId));
+        $query->from($db->quoteName('#__nxmarathonmanager_registration', 'reg'));
+        $query->where($db->quoteName('reg.eventid') . ' = '.$db->quote($eventId));
         if($paid){
-            $query->where($db->quoteName('paid') . ' = 1');
+            $query->where($db->quoteName('reg.paid') . ' = 1');
         }
         $db->setQuery($query);
         return $db->loadResult();
@@ -544,9 +544,9 @@ class ModMManagerExportHelper{
                 $query = $db->getQuery(true);
 
                 $query->select('*');
-                $query->from($db->quoteName('#__nxmarathonmanager_registration'));
-                $query->where($db->quoteName('published') . ' = ' . $db->quote('1'));
-                $query->where($db->quoteName('eventid') . ' = ' . $db->quote($eventId));
+                $query->from($db->quoteName('#__nxmarathonmanager_registration','reg'));
+                $query->where($db->quoteName('reg.published') . ' = ' . $db->quote('1'));
+                $query->where($db->quoteName('reg.eventid') . ' = ' . $db->quote($eventId));
                 $db->setQuery($query);
                 return $db->loadObjectList();
 
@@ -615,11 +615,18 @@ class ModMManagerExportHelper{
 
         // combine the data
         $data           = array();
-        $headline       = ['registration_id','eventid','Registrationsdatum','Teamname','Startnummer','Kategorie','','Sprache Last Info','Kontakt','','','Ankunft','','Bezahlt'];
+        $headline       = ['registration_id','eventid','Registrationsdatum','Teamname','Startnummer','Kategorie','','Anzahl Karten','Kontakt','','','Ankunft','','Bezahlt'];
         for($i=1; $i<6; $i++){
             $headline = array_merge($headline,['Läufer '.$i.' Vorname','Nachname','Jahrgang','Vergünstigung','Wohnort']);
         }
+        // Add to spacers
+        $headline[] = '';
+        $headline[] = '';
+        // Add Country (since 1.1)
+        $headline[] = 'Country Läufer 1';
+        $headline[] = 'Country Läufer 2';
         $registrations  = self::designRegistrationsForExport($db_regs);
+
         $data[]         = $headline;
         $data           = array_merge($data, $registrations);
         // Do the xls
@@ -653,6 +660,9 @@ class ModMManagerExportHelper{
             7 => 700,
             9 => 900
         );
+        $countries = self::getCountries();
+        error_log(json_encode($countries));
+
         foreach ($db_regs as $regData){
 
             $arrival = $regData->arrival_date;
@@ -688,8 +698,7 @@ class ModMManagerExportHelper{
             $registration[] = $num;        // Number
             $registration[] = $category->labeledId;         // Category ID
             $registration[] = $category->label;             // Category Name
-            //$registration[] = $regData->maps_count;       // Entfernt in Version 1.1.2 gemäss Absprache DV Herbst 2021
-            $registration[] = $regData->lastinfolang;       // Hinzugefügt in Version 1.1.2 gemäss Absprache mit DV Herbst 2021
+            $registration[] = $regData->maps_count;
             $registration[] = $contactName;     // Kontakt
             $registration[] = $regData->contactemail . $runnerMails;
             $registration[] = $regData->emergency_number;
@@ -699,16 +708,37 @@ class ModMManagerExportHelper{
 
             // Runners
 
+            $runnerCountry = array();
+            $runnerCount = 0;
             foreach($runnersArr as $runnerItem){
                 $registration[] = (array_key_exists('runner_firstname',$runnerItem)) ? $runnerItem['runner_firstname'] : '';
                 $registration[] = (array_key_exists('runner_lastname',$runnerItem)) ? $runnerItem['runner_lastname'] : '';
                 $registration[] = (array_key_exists('runner_year',$runnerItem)) ? $runnerItem['runner_year'] : '';
-                $registration[] = (array_key_exists('runner_pt_reduction',$runnerItem)) ? self::publicTransportReduction($runnerItem['runner_pt_reduction']) : '';
+                $registration[] = (array_key_exists('pt_reduction',$runnerItem)) ? self::publicTransportReduction($runnerItem['pt_reduction']) : '';
                 $registration[] = (array_key_exists('runner_location',$runnerItem)) ? $runnerItem['runner_location'] : '';
+                if($runnerCount < 2 && array_key_exists('runner_country',$runnerItem)){
+                    error_log($countries[$runnerItem['runner_country']]['name']);
+                    error_log("Country Code: " . $countries[$runnerItem['runner_country']]['countrycode']);
+                    $runnerCountry[] = strtoupper($countries[$runnerItem['runner_country']]['countrycode']);
+                }
+                $runnerCount++;
             }
+            //Fill up columns (since version 1.1)
+            $colsToFill = (5 - count($runnersArr)) * 5;         // max amount runners(5) per team - effective registered(count runnserArr) * cols per runner(5)
+            $colsOffset = 2;                                    // offset for empty columns (later used by timing hobbit)
             /*
-             * {"participants0":{"runner_gender":"m","runner_firstname":"Marco","runner_lastname":"Rensch","runner_location":"Mels","runner_country":"2","runner_year":"1986","runner_email":"marco.rensch@nx-designs.ch","pt_reduction":"0"}}
+             * {"participants0":{"runner_gender":"m","runner_firstname":"MArco","runner_lastname":"Rensch","runner_location":"Mels","runner_country":"2","runner_year":"1986","runner_email":"marco.rensch@nx-designs.ch","pt_reduction":"0"}}
              */
+            // Leerspalten für Zeitmessung einfügen (bis und mit --> AN / AO)
+            $colsCounter = 0;
+            while ($colsCounter < $colsToFill+$colsOffset){
+                $registration[] = '';
+                $colsCounter++;
+            }
+
+            //Runner Country (since v1.1)
+            $registration[] = $runnerCountry[0];
+            $registration[] = $runnerCountry[1];
 
             $registrationsArr[] = $registration;
 
@@ -788,6 +818,30 @@ class ModMManagerExportHelper{
         }else{
             return false;
         }
+    }
+
+    /**
+     * Returns all countries configured in MarathonManager as associative array
+     * @return mixed|null
+     */
+    public static function checkCountriesAjax(){
+        $data = self::getCountries();
+        return $data;
+    }
+    public static function getCountries(){
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+
+        $query->select(array('a.id','a.name','a.countrycode'))
+            ->from($db->quoteName('#__nxmarathonmanager_country', 'a'));
+        //$query->order('a.ordering ASC');
+
+        // Reset the query using our newly populated query object.
+        $db->setQuery($query);
+
+        // Load the results as a list of stdClass objects (see later for more options on retrieving data).
+        $results = $db->loadAssocList('id');
+        return $results;
     }
 
 }
