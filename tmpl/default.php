@@ -40,6 +40,7 @@ defined('_JEXEC') or die;
                                     <th>ID</th>
                                     <th>Team</th>
                                     <th>Kontakt</th>
+                                    <th>Registriert</th>
                                     <th>Telefon</th>
                                     <th>Referenznummer</th>
                                     <th>Startgebühr</th>

@@ -548,7 +548,11 @@ class ModMManagerExportHelper{
                 $query->where($db->quoteName('published') . ' = ' . $db->quote('1'));
                 $query->where($db->quoteName('eventid') . ' = ' . $db->quote($eventId));
                 $db->setQuery($query);
-                return $db->loadObjectList();
+                $data = $db->loadObjectList();
+                foreach ($data as $registration){
+                    $registration->created = HtmlHelper::date($registration->created, Text::_('d.m.y H:i'));
+                }
+                return $data;
 
             } catch (Exception $e) {
                 return $e->getMessage();

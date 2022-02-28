@@ -2,8 +2,11 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="c235b7e2-6eac-4d01-b985-60ad1b30a6cf" name="SIMM Local - Manager Export Module" url="http://marathon.local">
-        <fileTransfer mountedRoot="$USER_HOME$/Sites/marathon/modules/mod_mmanager_export" accessType="MOUNT" port="0" />
+      <webServer id="8a132406-d83d-49af-8fa2-e3d92381710e" name="SIMM LOCAL" url="http://localhost">
+        <fileTransfer mountedRoot="$USER_HOME$/Sites/localWebsites/MountainMarathon" accessType="MOUNT" port="0" />
+      </webServer>
+      <webServer id="d5741447-cb14-44cb-bf6b-df52b6340bfb" name="DEPLOY" url="http://localhost">
+        <fileTransfer mountedRoot="$USER_HOME$/Deploy/MarathonManagerExportModule" accessType="MOUNT" port="0" />
       </webServer>
     </option>
   </component>
