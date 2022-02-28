@@ -27,9 +27,9 @@ $document->addStyleSheet('media/com_nxmarathonmanager/font-awesome-514/css/all.m
 
 // Add scripts
 
-$document->addScript('modules/mod_mmanager_export/tmpl/assets/js/main.js');
-$document->addScript('modules/mod_mmanager_export/tmpl/assets/js/search.js');
-$document->addScript('modules/mod_mmanager_export/tmpl/assets/js/ajax.js');
+$document->addScript('modules/mod_mmanager_export/tmpl/assets/js/main.js?ver=1.1');
+$document->addScript('modules/mod_mmanager_export/tmpl/assets/js/search.js?ver=1.1');
+$document->addScript('modules/mod_mmanager_export/tmpl/assets/js/ajax.js?ver=1.1');
 $document->addStyleSheet('modules/mod_mmanager_export/tmpl/assets/css/checkbox.min.css');
 
 // Include Components Router

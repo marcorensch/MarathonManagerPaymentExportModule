@@ -10,10 +10,12 @@ jQuery(document).ready(function ($){
             if(data.success){
                 console.log(data);
                 for(let registration of data.data){
+                    console.log(registration);
                     let checked = parseInt(registration.paid) ? 'checked' : '';
                     let row = '<tr>'+
                                     '<td>'+registration.id+'</td>'+
-                                    '<td>'+registration.teamname+'</td>'+
+                                    '<td><strong>'+registration.teamname+'</strong></td>'+
+                                    '<td><a href="mailto:'+registration.contactemail+'"><i class="fas fa-envelope"></i></a><span style="margin-left:6px; display: inline-block">'+registration.contactemail+'</span></td>'+
                                     '<td>'+registration.created+'</td>'+
                                     '<td>'+registration.emergency_number+'</td>'+
                                     '<td>'+registration.reference_num+'</td>'+
