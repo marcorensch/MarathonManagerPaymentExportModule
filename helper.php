@@ -658,12 +658,13 @@ class ModMManagerExportHelper{
     public static function designRegistrationsForExport($db_regs){
         $registrationsArr = array();
         $startnumbers = array(
-            1 => 100,
-            3 => 300,
-            5 => 500,
-            7 => 700,
-            9 => 900
+            1 => 101,
+            3 => 301,
+            5 => 501,
+            7 => 701,
+            9 => 901
         );
+        // Changed in Version 1.1.4 >> DV wünscht Startnummer ab nn1
         $countries = self::getCountries();
         error_log(json_encode($countries));
 

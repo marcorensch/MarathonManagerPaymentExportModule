@@ -3,10 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="8a132406-d83d-49af-8fa2-e3d92381710e" name="SIMM LOCAL" url="http://localhost">
-        <fileTransfer mountedRoot="$USER_HOME$/Sites/localWebsites/MountainMarathon" accessType="MOUNT" port="0" />
-      </webServer>
-      <webServer id="d5741447-cb14-44cb-bf6b-df52b6340bfb" name="DEPLOY" url="http://localhost">
-        <fileTransfer mountedRoot="$USER_HOME$/Deploy/MarathonManagerExportModule" accessType="MOUNT" port="0" />
+        <fileTransfer mountedRoot="$USER_HOME$/Sites/mountainmarathon" accessType="MOUNT" port="0" />
       </webServer>
     </option>
   </component>

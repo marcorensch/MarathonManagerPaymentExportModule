@@ -3,6 +3,10 @@
   <component name="PhpIncludePathManager">
     <include_path>
       <path value="$USER_HOME$/Sites/marathon" />
+      <path value="$USER_HOME$/Sites/mountainmarathon" />
     </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.0">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
 </project>
