@@ -619,7 +619,7 @@ class ModMManagerExportHelper{
 
         // combine the data
         $data           = array();
-        $headline       = ['registration_id','eventid','Registrationsdatum','Teamname','Startnummer','Kategorie','','Anzahl Karten','Kontakt','','','Ankunft','','Bezahlt'];
+        $headline       = ['registration_id','eventid','Registrationsdatum','Teamname','Startnummer','Kategorie','Parcours','Anzahl Karten','Kontakt','Mail','','Ankunft','','Bezahlt'];
         for($i=1; $i<6; $i++){
             $headline = array_merge($headline,['Läufer '.$i.' Vorname','Nachname','Jahrgang','Vergünstigung','Wohnort']);
         }
