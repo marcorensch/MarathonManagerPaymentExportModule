@@ -619,13 +619,13 @@ class ModMManagerExportHelper{
 
         // combine the data
         $data           = array();
-        $headline       = ['registration_id','eventid','Registrationsdatum','Teamname','Startnummer','Kategorie','Parcours','Anzahl Karten','Kontakt','Mail','','Ankunft','','Bezahlt'];
+        $headline       = ['registration_id','eventid','Registrationsdatum','Teamname','Startnummer','Kategorie','Parcours','Sprache Last Info','Kontakt','Mail','Telefon','Ankunft','','Bezahlt'];
         for($i=1; $i<6; $i++){
             $headline = array_merge($headline,['Läufer '.$i.' Vorname','Nachname','Jahrgang','Vergünstigung','Wohnort']);
         }
-        // Add to spacers
-        $headline[] = '';
-        $headline[] = '';
+        // Add two spacers (SI-CARD)
+        $headline[] = 'SI-Card 1';
+        $headline[] = 'SI-Card 2';
         // Add Country (since 1.1)
         $headline[] = 'Country Läufer 1';
         $headline[] = 'Country Läufer 2';
@@ -703,7 +703,7 @@ class ModMManagerExportHelper{
             $registration[] = $num;        // Number
             $registration[] = $category->labeledId;         // Category ID
             $registration[] = $category->label;             // Category Name
-            $registration[] = $regData->maps_count;
+            $registration[] = $regData->lastinfolang;       // Changed to Last Info Language (1.1.6)
             $registration[] = $contactName;     // Kontakt
             $registration[] = $regData->contactemail . $runnerMails;
             $registration[] = $regData->emergency_number;
@@ -740,6 +740,8 @@ class ModMManagerExportHelper{
                 $registration[] = '';
                 $colsCounter++;
             }
+
+            //
 
             //Runner Country (since v1.1)
             $registration[] = $runnerCountry[0];
