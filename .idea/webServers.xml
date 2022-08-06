@@ -5,6 +5,9 @@
       <webServer id="8a132406-d83d-49af-8fa2-e3d92381710e" name="SIMM LOCAL" url="http://localhost">
         <fileTransfer mountedRoot="$USER_HOME$/Sites/mountainmarathon" accessType="MOUNT" port="0" />
       </webServer>
+      <webServer id="a4182b2d-f4af-46c1-832d-4034236dad5f" name="Deployment" url="http://localhost">
+        <fileTransfer mountedRoot="$USER_HOME$/Deployment/Joomla/MountainMarathonExportModule" accessType="MOUNT" port="0" />
+      </webServer>
     </option>
   </component>
 </project>
